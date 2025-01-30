@@ -1,0 +1,28 @@
+service: my-lambda-backend  # Name of your service
+
+provider:
+  name: aws
+  runtime: nodejs20.x  # Specify your desired Node.js version
+  region: ap-south-1   # Adjust as per your region
+  # Using OIDC for authentication (no AWS credentials needed)
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "*"
+
+functions:
+  myLambdaFunction:
+    handler: index.handler  # Points to the handler function in index.js
+    # Define additional settings if needed (e.g., memory size, timeout, etc.)
+    # memorySize: 128
+    # timeout: 10
+
+package:
+  include:
+    - index.js
+    - package.json
+    - node_modules/**
+  exclude:
+    - .git/**
+    - .github/**
