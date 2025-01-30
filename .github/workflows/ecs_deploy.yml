@@ -19,11 +19,11 @@ jobs:
       uses: docker/setup-buildx-action@v2
     
     - name: Configure AWS credentials using OIDC
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::975049994612:role/oidc-cloudaws
         aws-region: ap-south-1
-
+        
     # Step 4: Set up Docker for Amazon ECR login
     - name: Log in to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
