@@ -1,45 +1,28 @@
-name: Deploy Lambda Function
+service: my-lambda-backend  # Name of your service
 
-on:
-  push:
-    branches:
-      - main  # Deploy on pushes to the main branch
+provider:
+  name: aws
+  runtime: nodejs20.x  # Specify your desired Node.js version
+  region: ap-south-1   # Adjust as per your region
+  # Using OIDC for authentication (no AWS credentials needed)
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "*"
 
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+functions:
+  myLambdaFunction:
+    handler: index.handler  # Points to the handler function in index.js
+    # Define additional settings if needed (e.g., memory size, timeout, etc.)
+    # memorySize: 128
+    # timeout: 10
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Checkout repository
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'  # Match the Node.js version to your Lambda's runtime
-
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: |
-          cd ./backend  # Change to the backend directory
-          npm install -g serverless@3
-          npm install
-
-      # Step 4: Configure AWS credentials using OIDC
-      - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::975049994612:role/oidc-lambda  # Replace with your role ARN
-          aws-region: ap-south-1  # Replace with your AWS region
-
-      # Step 5: Deploy the Lambda function with Serverless Framework
-      - name: Deploy to AWS Lambda
-        run: |
-          cd ./backend  # Ensure you are in the correct directory for deployment
-          sls deploy
+package:
+  include:
+    - index.js
+    - package.json
+    - node_modules/**
+  exclude:
+    - .git/**
+    - .github/**
