@@ -1,0 +1,47 @@
+name: Deploy Lambda Function
+
+on:
+  push:
+    branches:
+      - main  # Deploy on pushes to the main branch
+      
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Match the Node.js version to your Lambda's runtime
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install -g serverless@3
+          npm install
+
+      # Step 4: Configure AWS credentials using OIDC
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::975049994612:role/oidc-cloudaws  # Replace with your role ARN
+          aws-region: ap-south-1  # Replace with your AWS region
+
+      # Step 5: Change directory to where the Serverless configuration file is located
+      - name: Change directory to service folder (if necessary)
+        run: cd ./backend  # Replace with your actual service directory
+
+      # Step 6: Deploy the Lambda function with Serverless Framework
+      - name: Deploy to AWS Lambda
+        run: |
+          sls deploy
