@@ -22,7 +22,7 @@ jobs:
     - name: Set up AWS OIDC authentication
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::975049994612:role/oidc-cloudaws
+        role-to-assume: arn:aws:iam::975049994612:role/oidc-cloud
         aws-region: ap-south-1 # Update with your AWS region
         role-session-name: GitHubActionsCI
 
