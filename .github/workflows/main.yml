@@ -3,7 +3,7 @@ name: Deploy Lambda Function
 on:
   push:
     branches:
-      - main1  # Deploy on pushes to the main branch
+      - main  # Deploy on pushes to the main branch
 
 permissions:
   id-token: write   # This is required for requesting the JWT
