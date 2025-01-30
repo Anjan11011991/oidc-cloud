@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main  # Deploy on pushes to the main branch
-      
+
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
@@ -27,7 +27,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
-          run: cd ./backend
+          cd ./backend  # Change to the backend directory
           npm install -g serverless@3
           npm install
 
@@ -35,11 +35,11 @@ jobs:
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::975049994612:role/oidc-cloudaws  # Replace with your role ARN
+          role-to-assume: arn:aws:iam::975049994612:role/oidc-lambda  # Replace with your role ARN
           aws-region: ap-south-1  # Replace with your AWS region
 
-      # Step 6: Deploy the Lambda function with Serverless Framework
+      # Step 5: Deploy the Lambda function with Serverless Framework
       - name: Deploy to AWS Lambda
         run: |
-          run: cd ./backend
+          cd ./backend  # Ensure you are in the correct directory for deployment
           sls deploy
