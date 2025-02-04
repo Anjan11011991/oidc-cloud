@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::975049994612:role/oidc-cloudaws  # Replace with your role ARN
+          role-to-assume: arn:aws:iam::975049994612:role/test1  # Replace with your role ARN
           aws-region: ap-south-1  # Replace with your AWS region
 
       # Step 5: Deploy the Lambda function with Serverless Framework
