@@ -1,6 +1,10 @@
 name: Deploy Lambda Function
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   id-token: write   # This is required for requesting the JWT
